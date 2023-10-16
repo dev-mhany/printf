@@ -4,16 +4,13 @@
 #include "main.h"
 
 /**
- * printf_float - Prints the decimal representation of a double
- * @args_list: The arguments list
+ * calculate_and_print_float - Calculate and print the decimal number
+ * @num: The double number to print
  * @fmt_info: The format info
- *
- * Return: The number of characters written
  */
-void printf_float(va_list *args_list, fmt_info_t  *fmt_info)
+void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 {
 	int i, len, num_len, zeros_count, max_w;
-	double num = va_arg(*args_list, double);
 	char *str, has_sign = (fmt_info->plus_sign && num >= 0) || num < 0;
 	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11;
 	ushort_t mant_size = fmt_info->is_long_double ? 64 : 52;
@@ -27,7 +24,9 @@ void printf_float(va_list *args_list, fmt_info_t  *fmt_info)
 		if (str == NULL)
 		{
 			str = float_to_str(flt_info, FALSE);
-			str = round_float(str, fmt_info->is_precision_set ? fmt_info->precision : 6, T);
+			int precision = fmt_info->is_precision_set ? fmt_info->precision : 6;
+
+			str = round_float(str, precision, T);
 			num_len = _strlen(str) + ((fmt_info->plus_sign && num >= 0) ? 1 : 0);
 			max_w = MAX(fmt_info->width, num_len);
 			zeros_count = (max_w - num_len) * !fmt_info->left_align * (fmt_info->padding == '0');
@@ -53,3 +52,17 @@ void printf_float(va_list *args_list, fmt_info_t  *fmt_info)
 		free_float_info(flt_info);
 	}
 }
+
+
+/**
+ * printf_float - Prints the decimal representation of a double
+ * @args_list: The arguments list
+ * @fmt_info: The format info
+ */
+void printf_float(va_list *args_list, fmt_info_t *fmt_info)
+{
+	double num = va_arg(*args_list, double);
+
+	calculate_and_print_float(num, fmt_info);
+}
+
