@@ -104,3 +104,55 @@ void _putnchrs(int n, ...)
     }
     va_end(args);
 }
+*******
+/**
+ * _printf - Our version of the printf function.
+ * @format: Format string.
+ * @...: Variable arguments.
+ * Return: Number of characters printed.
+ */
+int _printf(const char *format, ...)
+{
+    va_list args;
+    int count = 0;
+
+    va_start(args, format);
+
+    for (int i = 0; format && format[i] != '\0'; i++) {
+        if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%')) {
+            switch (format[i + 1]) {
+                case 'c':
+                    count += write(1, &(char){va_arg(args, int)}, 1);
+                    i++;  // skip the specifier
+                    break;
+                case 's':
+                {
+                    char *str = va_arg(args, char*);
+                    for (int j = 0; str && str[j] != '\0'; j++) {
+                        write(1, &str[j], 1);
+                        count++;
+                    }
+                    i++;  // skip the specifier
+                    break;
+                }
+                case '%':
+                    count += write(1, &"%", 1);
+                    i++;  // skip the specifier
+                    break;
+            }
+        } else {
+            count += write(1, &format[i], 1);
+        }
+    }
+
+    va_end(args);
+
+    return count;
+}
+
+int main() {
+    char character = 'A';
+    char *string = "Hello, world!";
+    _printf("Character: %c\nString: %s\nPercentage symbol: %%\n", character, string);
+    return 0;
+}
