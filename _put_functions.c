@@ -6,94 +6,13 @@
 #include "main.h"
 
 /**
- * _printf - produces output according to a format
- * @format: The specified format
- *
- * Return: The number of characters that were printed
- */
-int _printf(const char *format, ...)
-{
-	int i = 0, tmp, processing_escape = FALSE, error = 1, last_token;
-	fmt_info_t fmt_info;
-	va_list args;
-
-	fmt_info.star = 0;
-
-	if (!format || (format[0] == '%' && format[1] == '\0'))
-		return (-1);
-	va_start(args, format);
-	write_to_buffer(0, -1);
-	for (i = 0; format && *(format + i) != '\0'; i++)
-	{
-		if (processing_escape)
-		{
-			tmp = read_format_info(format + i, args, &fmt_info, &last_token);
-			processing_escape = FALSE;
-			set_format_error(format, &i, tmp, last_token, &error);
-			if (is_specifier(fmt_info.spec))
-				write_format(&args, &fmt_info);
-			i += (is_specifier(fmt_info.spec) ? tmp : 0);
-		}
-		else
-		{
-			if (*(format + i) == '%')
-				processing_escape = TRUE;
-			else
-				_putchar(*(format + i));
-		}
-	}
-	write_to_buffer(0, 1);
-	va_end(args);
-	return (error <= 0 ? error : write_to_buffer('\0', -2));
-}
-
-/**
- * write_format - Writes data formatted against some parameters
- * @args_list: The arguments list
- * @fmt_info: The format info parameters that were read
- */
-void write_format(va_list *args_list, fmt_info_t *fmt_info)
-{
-	int i;
-	spec_printer_t spec_printers[] = {
-		{'%', convert_fmt_percent},
-		{'p', convert_fmt_p},
-		{'c', convert_fmt_c},
-		{'s', convert_fmt_s},
-		{'d', convert_fmt_di},
-		{'i', convert_fmt_di},
-		{'X', convert_fmt_xX},
-		{'x', convert_fmt_xX},
-		{'o', convert_fmt_o},
-		{'u', convert_fmt_u},
-		/* #begin custom specifiers */
-		{'b', convert_fmt_b},
-		{'R', convert_fmt_R},
-		{'r', convert_fmt_r},
-		{'S', convert_fmt_S},
-		/* #end */
-		{'F', convert_fmt_fF},
-		{'f', convert_fmt_fF},
-	};
-
-	for (i = 0; i < 23 && spec_printers[i].spec != '\0'; i++)
-	{
-		if (fmt_info->spec == spec_printers[i].spec)
-		{
-			spec_printers[i].print_arg(args_list, fmt_info);
-			break;
-		}
-	}
-}
-
-/**
- * _putstr - writes the given string to the buffer
+ * _putstring - writes the given string to the buffer
  * @str: The string to write
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
  */
-int _putstr(char *str)
+int _putstring(char *str)
 {
 	int i, out;
 
@@ -158,4 +77,39 @@ int write_to_buffer(char c, char action)
 		return (chars_count);
 	}
 	return (out);
+}
+
+/**
+ * _putnum - Prints a number to the buffer
+ * @zeros_count: The number of zeros to print
+ * @num: The number
+ * @str: The string representation of the number
+ */
+void _putnum(int zeros_count, long num, char *str)
+{
+	int i;
+
+	for (i = 0; i < zeros_count; i++)
+		_putchar('0');
+	for (i = num < 0 ? 1 : 0; *(str + i) != '\0'; i++)
+		_putchar(*(str + i));
+}
+
+/**
+ * _putnchrs - Prints multiple characters
+ * @n: The number of characters to print
+ */
+void _putnchrs(int n, ...)
+{
+	int i;
+	va_list args;
+
+	if (n <= 0)
+		return;
+	va_start(args, n);
+	for (i = 0; i < n; i++)
+	{
+		_putchar(va_arg(args, int));
+	}
+	va_end(args);
 }
