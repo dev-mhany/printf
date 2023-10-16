@@ -110,6 +110,14 @@ fmt_info_t *new_format_info();
 float_info_t *new_float_info(ushort_t exponent_size, ushort_t mantissa_size);
 void free_float_info(float_info_t *flt_info);
 
+void calculate_and_print_float(double num, fmt_info_t *fmt_info);
+float_info_t *setup_float_info(fmt_info_t *fmt_info);
+int should_have_sign(double num, fmt_info_t *fmt_info);
+char *calculate_float_str(double num, float_info_t *flt_info, fmt_info_t *fmt_info);
+int calculate_zeros_count(fmt_info_t *fmt_info, int max_w, int num_len);
+void print_float_padding(fmt_info_t *fmt_info, double num, int num_len, int max_w, int zeros_count);
+void print_float_number(fmt_info_t *fmt_info, double num, int num_len, char *str);
+
 int set_number(const char *str, int *number);
 void set_length(char cur, int *pos, fmt_info_t *fmt_info);
 int set_flags(const char *str, fmt_info_t *fmt_info);
