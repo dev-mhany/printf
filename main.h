@@ -111,6 +111,8 @@ float_info_t *new_float_info(ushort_t exponent_size, ushort_t mantissa_size);
 void free_float_info(float_info_t *flt_info);
 
 void calculate_and_print_float(double num, fmt_info_t *fmt_info);
+char *convert_float_to_str(double num, fmt_info_t *fmt_info, float_info_t *flt_info);
+void printf_float(va_list *args_list, fmt_info_t *fmt_info);
 float_info_t *setup_float_info(fmt_info_t *fmt_info);
 int should_have_sign(double num, fmt_info_t *fmt_info);
 char *calculate_float_str(double num, float_info_t *flt_info, fmt_info_t *fmt_info);
