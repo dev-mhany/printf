@@ -15,7 +15,8 @@ void printf_float(va_list *args_list, fmt_info_t  *fmt_info)
 	int i, len, num_len, zeros_count, max_w;
 	double num = va_arg(*args_list, double);
 	char *str, has_sign = (fmt_info->plus_sign && num >= 0) || num < 0;
-	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11, mant_size = fmt_info->is_long_double ? 64 : 52;
+	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11;
+	ushort_t mant_size = fmt_info->is_long_double ? 64 : 52;
 	float_info_t *flt_info;
 
 	flt_info = new_float_info(exp_size, mant_size);
