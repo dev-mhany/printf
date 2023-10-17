@@ -71,7 +71,10 @@ typedef struct format_info fmt_info_t;
 struct spec_printer
 {
 	char specifier;
-	void (*print_arg)(va_list *args, fmt_info_t *fmt_info);
+void (*print_arg)(
+    va_list *args, 
+    fmt_info_t *fmt_info
+);
 };
 typedef struct spec_printer spec_printer_t;
 typedef unsigned char uchar_t;
