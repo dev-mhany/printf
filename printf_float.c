@@ -55,7 +55,8 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 		str = round_float(str, fmt_info->is_precision_set ?
 		fmt_info->precision : 6, T);
 		print_float_parts(str, num, fmt_info);
-		} else 
+		}
+		else 
 	{
 		for (int i = 0; i < _strlen(str); i++)
 			_putchar(fmt_info->specifier == 'f' ? TOLOWER(str[i]) : TOUPPER(str[i]));
