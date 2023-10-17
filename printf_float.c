@@ -32,7 +32,7 @@ void print_float_parts(char *str, double num, fmt_info_t *fmt_info)
 }
 
 /**
- * calculate_and_print_float - Calculate and print the decimal number
+ * calculate_and_print_float - Calculate and print the decimal number.
  * @num: The double number to print
  * @fmt_info: The format info
  */
@@ -41,8 +41,9 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 	char *str;
 	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11;
 	ushort_t mant_size = fmt_info->is_long_double ? 64 : 52;
-	float_info_t *flt_info = new_float_info(exp_size, mant_size);
+	float_info_t *flt_info;
 
+	flt_info = new_float_info(exp_size, mant_size);
 	if (!flt_info)
 		return;
 
@@ -61,12 +62,14 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 }
 
 /**
- * printf_float - Prints the decimal representation of a double
+ * printf_float - Prints the decimal representation of a double.
  * @args_list: The arguments list
  * @fmt_info: The format info
  */
 void printf_float(va_list *args_list, fmt_info_t *fmt_info)
 {
-	double num = va_arg(*args_list, double);
+	double num;
+
+	num = va_arg(*args_list, double);
 	calculate_and_print_float(num, fmt_info);
 }
