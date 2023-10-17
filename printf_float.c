@@ -49,14 +49,14 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 
 	set_float_parts(num, exp_size, mant_size, flt_info);
 	str = check_validity(flt_info);
-	if (!str) 
+	if (!str)
 	{
 		str = float_to_str(flt_info, FALSE);
 		str = round_float(str, fmt_info->is_precision_set ?
 		fmt_info->precision : 6, T);
 		print_float_parts(str, num, fmt_info);
 		}
-		else 
+		else
 	{
 		for (int i = 0; i < _strlen(str); i++)
 			_putchar(fmt_info->specifier == 'f' ? TOLOWER(str[i]) : TOUPPER(str[i]));
