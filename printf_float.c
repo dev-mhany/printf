@@ -11,14 +11,18 @@
 void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 {
 	int i, len, num_len, zeros_count, max_w, precision;
-	char *str, has_sign = (fmt_info->plus_sign && num >= 0) || num < 0;
-	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11, mant_size = fmt_info->is_long_double ? 64 : 52;
+	char *str;
+	char has_sign = (fmt_info->plus_sign && num >= 0) || num < 0;
+	ushort_t exp_size = fmt_info->is_long_double ? 15 : 11;
+	ushort_t mant_size = fmt_info->is_long_double ? 64 : 52;
 	float_info_t *flt_info = new_float_info(exp_size, mant_size);
 
 	if (!flt_info)
 		return;
+
 	set_float_parts(num, exp_size, mant_size, flt_info);
 	str = check_validity(flt_info);
+
 	if (!str)
 	{
 		str = float_to_str(flt_info, FALSE);
@@ -29,6 +33,7 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 		zeros_count = (max_w - num_len) * !fmt_info->left_align;
 		zeros_count *= (fmt_info->padding == '0');
 		len = max_w - (zeros_count + num_len);
+
 		for (i = 0; !fmt_info->left_align && i < len; i++)
 			_putchar(' ');
 		if (has_sign)
@@ -45,6 +50,7 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 		for (i = 0; i < _strlen(str); i++)
 			_putchar(fmt_info->specifier == 'f' ? TOLOWER(str[i]) : TOUPPER(str[i]));
 	}
+
 	free(str);
 	free_float_info(flt_info);
 }
@@ -57,5 +63,6 @@ void calculate_and_print_float(double num, fmt_info_t *fmt_info)
 void printf_float(va_list *args_list, fmt_info_t *fmt_info)
 {
 	double num = va_arg(*args_list, double);
+
 	calculate_and_print_float(num, fmt_info);
 }
